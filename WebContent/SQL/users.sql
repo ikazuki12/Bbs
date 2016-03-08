@@ -4,5 +4,6 @@ create table users (
 	password varchar(255) not null,
 	name varchar(10) not null,
 	branch_code int not null,
-	Department int not null
+	position_code int not null,
+	exist varchar(3) not null
 );
