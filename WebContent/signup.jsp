@@ -22,19 +22,33 @@
 <form action="signup" method="post">
 <table>
 	<tr>
-		<th>ログインID</th><td><input type="text" name="login_id" /></td>
+		<th>ログインID</th><td><input type="text" name="login_id" value="${ editUser.loginId }" /></td>
 	</tr>
 	<tr>
 		<th>パスワード</th><td><input type="password" name="password" /></td>
 	</tr>
 	<tr>
-		<th>名前</th><td><input type="text" name="name" /></td>
+		<th>名前</th><td><input type="text" name="name" value="${ editUser.name }" /></td>
 	</tr>
 	<tr>
-		<th>所属支店(本社含む)</th><td><input type="text" name="branch_id" /></td>
+		<th>所属支店(本社含む)</th>
+		<td>
+			<select name="branch_id">
+				<c:forEach items="${ branches }" var="branch">
+				<option value="${ branch.id }">${ branch.name }</option>
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 	<tr>
-		<th>所属先(部署・役職)</th><td><input type="text" name="position_id" /></td>
+		<th>所属先(部署・役職)</th>
+		<td>
+			<select name="position_id">
+				<c:forEach items="${ positions }" var="position">
+				<option value="${ position.id }">${ position.name }</option>
+				</c:forEach>
+			</select>
+		</td>
 	</tr>
 </table>
 <input type="submit" value="登録"><br />

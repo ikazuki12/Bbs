@@ -4,27 +4,22 @@ import static bbs.utils.CloseableUtil.*;
 import static bbs.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.util.List;
 
-import bbs.beans.User;
-import bbs.dao.UserDao;
-import bbs.utils.CipherUtil;
+import bbs.beans.Branch;
+import bbs.dao.BranchDao;
 
+public class BranchService {
 
-public class UserService {
-
-	public void register(User user) {
-
+	public List<Branch> select() {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
-
-			UserDao userDao = new UserDao();
-			userDao.insert(connection, user);
+			BranchDao branchDao = new BranchDao();
+			List<Branch> branch = branchDao.getBranchList(connection);
 
 			commit(connection);
+			return branch;
 		} catch (RuntimeException e) {
 			rollback(connection);
 			throw e;
@@ -36,4 +31,3 @@ public class UserService {
 		}
 	}
 }
-

@@ -13,7 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
-import bbs.beans.Users;
+import bbs.beans.Branch;
+import bbs.beans.Position;
+import bbs.beans.User;
+import bbs.service.BranchService;
+import bbs.service.PositionService;
 import bbs.service.UserService;
 
 @WebServlet(urlPatterns = { "/signup" })
@@ -24,6 +28,11 @@ public class SignUpServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
+
+		List<Branch> branches = new BranchService().select();
+		request.setAttribute("branches", branches);
+		List<Position> positions = new PositionService().select();
+		request.setAttribute("positions", positions);
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
 	}
 
@@ -32,7 +41,7 @@ public class SignUpServlet extends HttpServlet {
 			throws IOException, ServletException {
 
 		List<String> messages = new ArrayList<String>();
-		Users user = new Users();
+		User user = new User();
 		user.setLoginId(request.getParameter("login_id"));
 		user.setPassword(request.getParameter("password"));
 		user.setName(request.getParameter("name"));
@@ -45,10 +54,10 @@ public class SignUpServlet extends HttpServlet {
 
 			new UserService().register(user);
 
-			response.sendRedirect("./signup.jsp");
+			response.sendRedirect("./");
 		} else {
 			session.setAttribute("errorMessages", messages);
-			Users editUser = user;
+			User editUser = user;
 			request.setAttribute("editUser", editUser);
 
 			request.getRequestDispatcher("signup.jsp").forward(request, response);

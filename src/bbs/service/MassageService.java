@@ -5,24 +5,20 @@ import static bbs.utils.DBUtil.*;
 
 import java.sql.Connection;
 
-import bbs.beans.User;
-import bbs.dao.UserDao;
-import bbs.utils.CipherUtil;
+import bbs.beans.Message;
+import bbs.dao.MessageDao;
 
+public class MassageService {
 
-public class UserService {
-
-	public void register(User user) {
+	public void register(Message message) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
+			MessageDao messageDao = new MessageDao();
 
-			UserDao userDao = new UserDao();
-			userDao.insert(connection, user);
+			messageDao.insert(connection, message);
 
 			commit(connection);
 		} catch (RuntimeException e) {
@@ -36,4 +32,3 @@ public class UserService {
 		}
 	}
 }
-

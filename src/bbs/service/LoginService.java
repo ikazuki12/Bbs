@@ -9,22 +9,20 @@ import bbs.beans.User;
 import bbs.dao.UserDao;
 import bbs.utils.CipherUtil;
 
+public class LoginService {
 
-public class UserService {
-
-	public void register(User user) {
+	public User login(String loginId, String password) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
-
 			UserDao userDao = new UserDao();
-			userDao.insert(connection, user);
+			String encPassword = CipherUtil.encrypt(password);
+			User user = userDao.getUser(connection, loginId, encPassword);
 
 			commit(connection);
+			return user;
 		} catch (RuntimeException e) {
 			rollback(connection);
 			throw e;
@@ -36,4 +34,3 @@ public class UserService {
 		}
 	}
 }
-

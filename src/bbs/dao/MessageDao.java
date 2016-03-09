@@ -6,40 +6,36 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import bbs.beans.Users;
+import bbs.beans.Message;
 import bbs.exception.SQLRuntimeException;
 
-public class UsersDao {
+public class MessageDao {
 
-	public void insert(Connection connection, Users user) {
+	public void insert(Connection connection, Message message) {
 
 		PreparedStatement ps = null;
 		try {
 			StringBuilder mySql = new StringBuilder();
-			mySql.append("insert into users (");
-			mySql.append("login_id");
-			mySql.append(", password");
-			mySql.append(", name");
-			mySql.append(", branch_id");
-			mySql.append(", position_id");
-			mySql.append(", stopped");
+			mySql.append("insert into messages (");
+			mySql.append("user_id");
+			mySql.append(", subject ");
+			mySql.append(", text ");
+			mySql.append(", category ");
+			mySql.append(", insert_date ");
 			mySql.append(") values (");
 			mySql.append("?");
 			mySql.append(", ?");
 			mySql.append(", ?");
 			mySql.append(", ?");
-			mySql.append(", ?");
-			mySql.append(", ?");
+			mySql.append(", current_timestamp");
 			mySql.append(")");
 
 			ps = connection.prepareStatement(mySql.toString());
 
-			ps.setString(1, user.getLoginId());
-			ps.setString(2, user.getPassword());
-			ps.setString(3, user.getName());
-			ps.setInt(4, user.getBranchId());
-			ps.setInt(5, user.getPositionId());
-			ps.setBoolean(6, true);
+			ps.setInt(1, message.getUserId());
+			ps.setString(2, message.getSubject());
+			ps.setString(3, message.getText());
+			ps.setString(4, message.getCategory());
 
 			ps.executeUpdate();
 		} catch (SQLException e) {
