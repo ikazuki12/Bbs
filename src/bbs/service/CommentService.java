@@ -6,24 +6,19 @@ import static bbs.utils.DBUtil.*;
 import java.sql.Connection;
 import java.util.List;
 
-import bbs.beans.User;
-import bbs.dao.UserDao;
-import bbs.utils.CipherUtil;
+import bbs.beans.Comment;
+import bbs.dao.CommentDao;
 
+public class CommentService {
 
-public class UserService {
-
-	public void register(User user) {
+	public void register(Comment comment) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
-
-			UserDao userDao = new UserDao();
-			userDao.insert(connection, user);
+			CommentDao commentDao = new CommentDao();
+			commentDao.insert(connection, comment);
 
 			commit(connection);
 		} catch (RuntimeException e) {
@@ -36,14 +31,15 @@ public class UserService {
 			close(connection);
 		}
 	}
-	public List<User> getUser() {
+
+	public List<Comment> getComment() {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
-			UserDao userDao = new UserDao();
-			List<User> ret =  userDao.getUsers(connection);
+			CommentDao commentDao = new CommentDao();
+			List<Comment> ret =  commentDao.getComment(connection);
 
 			commit(connection);
 
@@ -59,4 +55,3 @@ public class UserService {
 		}
 	}
 }
-

@@ -28,12 +28,13 @@ public class SignUpServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-
 		List<Branch> branches = new BranchService().select();
 		request.setAttribute("branches", branches);
 		List<Position> positions = new PositionService().select();
 		request.setAttribute("positions", positions);
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
+
+
 	}
 
 	@Override

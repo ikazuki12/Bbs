@@ -109,4 +109,55 @@ public class UserDao {
 			close(rs);
 		}
 	}
+
+	public List<User> getUsers(Connection connection) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder mySql = new StringBuilder();
+			mySql.append("select * from users ");
+
+			ps = connection.prepareStatement(mySql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<User> ret = toComment(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<User> toComment(ResultSet rs)
+			throws SQLException {
+
+		List<User> ret = new ArrayList<User>();
+		try {
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String loginId = rs.getString("login_id");
+				String password = rs.getString("password");
+				String name = rs.getString("name");
+				int branchId = rs.getInt("branch_id");
+				int positionId = rs.getInt("position_id");
+				Boolean stopped = rs.getBoolean("stopped");
+
+				User user = new User();
+				user.setId(id);
+				user.setLoginId(loginId);
+				user.setPassword(password);
+				user.setName(name);
+				user.setBranchId(branchId);
+				user.setPositionId(positionId);
+				user.setStopped(stopped);
+
+				ret.add(user);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
+
 }

@@ -9,8 +9,21 @@
 <title>新規投稿</title>
 </head>
 <body>
+<h3>新規投稿</h3>
+<hr />
+<c:if test="${ not empty errorMessags }">
+	<ul>
+		<c:forEach items="${ errorMessages }" var="message">
+			<li><c:out value="${message}" /></li>
+		</c:forEach>
+	</ul>
+	<c:remove var="errorMessages" scope="session" />
+</c:if>
+<c:if test="${ empty loginUser }">
+ログインしてください。
+</c:if>
 <c:if test="${ not empty loginUser }">
-	<form action="massage" method="post">
+	<form action="message" method="post">
 		<table border="1">
 			<tr>
 				<th>件名</th>
@@ -28,5 +41,6 @@
 		<input type="submit" value="投稿" />
 	</form>
 </c:if>
+<a href="./">戻る</a>
 </body>
 </html>

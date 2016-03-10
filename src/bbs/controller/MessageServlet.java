@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 
 import bbs.beans.Message;
 import bbs.beans.User;
-import bbs.service.MassageService;
+import bbs.service.MessageService;
 
 @WebServlet(urlPatterns = { "/message" })
 public class MessageServlet extends HttpServlet {
@@ -45,7 +45,7 @@ public class MessageServlet extends HttpServlet {
 			User user = (User) session.getAttribute("loginUser");
 			message.setUserId(user.getId());
 
-			new MassageService().register(message);
+			new MessageService().register(message);
 
 			response.sendRedirect("./");
 		} else {
