@@ -15,9 +15,8 @@
 <a href="login">ログイン</a>
 </c:if>
 <c:if test="${ not empty loginUser }">
-	<a href="signup">ユーザー新規登録</a> /
 	<a href="message">新規投稿</a> /
-	<a href="logout">ログアウト</a>
+	<a href="control">ユーザー管理</a>
 <hr />
 <c:if test="${ not empty errorMessages }">
 			<ul>
@@ -29,16 +28,17 @@
 		</c:if>
 <c:forEach items="${ messages }" var="message">
 <form action="comment" method="post">
-<input type="hidden" name="message_id" value="${ message.userId }">
+<input type="hidden" name="message_id" value="${ message.messageId }">
 <table class="messages">
 	<tr>
 		<td colspan="2"><c:out value="${ message.category }" /></td>
+		<td class="delete_right"><a href="?message_id=${ message.messageId }">削除</a></td>
 	</tr>
 	<tr>
 		<th><c:out value="${ message.subject }" /></th>
 	</tr>
 	<tr>
-		<td colspan="2"><hr /></td>
+		<td colspan="3"><hr /></td>
 	</tr>
 	<tr>
 		<td><c:out value="${ message.name }" />&nbsp;&nbsp;&nbsp;
@@ -48,7 +48,7 @@
 		<td></td><td><c:out value="${ message.text }" /></td>
 	</tr>
 	<tr>
-		<td colspan="2"><hr /></td>
+		<td colspan="3"><hr /></td>
 	</tr>
 	<tr>
 		<td><div class="comment">コメント</div></td>
@@ -57,7 +57,7 @@
 	<c:forEach items="${ comments }" var="comment">
 		<c:if test="${ comment.messageId == message.userId }">
 			<tr>
-				<td colspan="2"><hr /></td>
+				<td colspan="3"><hr /></td>
 			</tr>
 
 				<c:forEach items="${ users }" var="user">
@@ -76,7 +76,7 @@
 		</c:if>
 	</c:forEach>
 	<tr>
-		<td colspan="2"><hr /></td>
+		<td colspan="3"><hr /></td>
 	</tr>
 	<tr>
 		<th>内容</th><td><textarea name="text" rows="10" cols="50"></textarea>

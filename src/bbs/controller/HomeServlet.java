@@ -32,13 +32,20 @@ public class HomeServlet extends HttpServlet {
 			isShowMessageForm = false;
 		}
 
+		if(request.getParameter("message_id") != null) {
+			int messageId = Integer.parseInt(request.getParameter("message_id"));
+			if (user.getPositionId() != 2) {
+				new MessageService().delteMessage(messageId);
+			}
+		}
+
 		List<UserMessage> messages = new MessageService().getMessage();
 		request.setAttribute("messages", messages);
 
 		List<Comment> comments = new CommentService().getComment();
 		request.setAttribute("comments", comments);
 
-		List<User> users = new UserService().getUser();
+		List<User> users = new UserService().getUsers();
 		request.setAttribute("users", users);
 
 		request.setAttribute("isShowMessageFrom", isShowMessageForm);

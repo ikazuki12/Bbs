@@ -19,47 +19,62 @@ import bbs.beans.User;
 import bbs.service.BranchService;
 import bbs.service.PositionService;
 import bbs.service.UserService;
+import bbs.utils.CipherUtil;
 
-@WebServlet(urlPatterns = { "/signup" })
-public class SignUpServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@WebServlet(urlPatterns = { "/settings" })
+public class CompileServlet extends HttpServlet {
+	private static final long serialVersionUID  = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
+			throws ServletException, IOException {
 
+		if (request.getParameter("user_id") != null) {
+			int userId = Integer.parseInt(request.getParameter("user_id"));
+			User user = new UserService().getUser(userId);
+			request.setAttribute("user", user);
+		}
 		List<Branch> branches = new BranchService().select();
 		request.setAttribute("branches", branches);
 		List<Position> positions = new PositionService().select();
 		request.setAttribute("positions", positions);
-		request.getRequestDispatcher("signup.jsp").forward(request, response);
+		request.getRequestDispatcher("settings.jsp").forward(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
+			throws ServletException, IOException {
 
 		List<String> messages = new ArrayList<String>();
+
+		String password = request.getParameter("password");
+
 		User user = new User();
+		user.setId(Integer.parseInt(request.getParameter("user_id")));
 		user.setLoginId(request.getParameter("login_id"));
-		user.setPassword(request.getParameter("password"));
+		if (StringUtils.isEmpty(password) == false) {
+			user.setPassword(CipherUtil.encrypt(password));
+		}
+		System.out.println(password);
 		user.setName(request.getParameter("name"));
 		user.setBranchId(Integer.parseInt(request.getParameter("branch_id")));
 		user.setPositionId(Integer.parseInt(request.getParameter("position_id")));
-
 		HttpSession session = request.getSession();
+		if (isValid(request, messages) == true) {
 
-		if(isValid(request, messages) == true) {
-
-			new UserService().register(user);
+			new UserService().userUpdete(user, password);
 
 			response.sendRedirect("./");
 		} else {
 			session.setAttribute("errorMessages", messages);
+			List<Branch> branches = new BranchService().select();
+			request.setAttribute("branches", branches);
+			List<Position> positions = new PositionService().select();
+			request.setAttribute("positions", positions);
 			User editUser = user;
-			request.setAttribute("editUser", editUser);
+			request.setAttribute("user", editUser);
 
-			request.getRequestDispatcher("signup.jsp").forward(request, response);
+			request.getRequestDispatcher("settings.jsp").forward(request, response);
 		}
 	}
 
@@ -73,27 +88,23 @@ public class SignUpServlet extends HttpServlet {
 			messages.add("ログインIDを入力してください");
 		}
 		else if (loginId.length() < 6 || loginId.length() > 20) {
-			messages.add("ログインIDの文字数は6文字以上20文字以下で入力してください");
+			messages.add("ログインIDは6文字以上20文字以下で入力してください");
 		}
 		else if (!loginId.matches("[a-zA-Z0-9]{6,20}")){
 			messages.add("ログインIDは半角英数字で入力してください");
 		}
-		if (StringUtils.isEmpty(password) == true) {
-			messages.add("パスワードを入力してください");
-		}
-		else if (password.length() < 6 || password.length() > 20) {
-			messages.add("パスワードの文字数は6文字以上20文字以下で入力してください");
-		}
-		else if (!password.matches("[a-zA-Z0-9]{6,255}")){
-			messages.add("パスワードは半角英数字で入力してください");
-		}
-		if (!password.equals(passwordCheck)) {
-			messages.add("パスワードが確認用と一致しません。");
+		if (StringUtils.isEmpty(password) == false) {
+			if (password.length() < 6 || password.length() > 20) {
+				messages.add("パスワードは6文字以上20文字以下で入力してください");
+			}
+			else if (!password.equals(passwordCheck)) {
+				messages.add("パスワードが確認用と一致しません。");
+			}
 		}
 		if (StringUtils.isEmpty(name) == true) {
 			messages.add("名前を入力してください");
 		}
-		if (name.length() > 10) {
+		else if (name.length() > 10) {
 			messages.add("名前は10文字以下で入力してください");
 		}
 		if (messages.size() == 0) {

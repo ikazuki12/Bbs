@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>新規登録</title>
+<title>ユーザー編集</title>
 </head>
 <body>
 <c:if test="${ not empty errorMessages }">
@@ -19,26 +19,36 @@
 	</div>
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
-<form action="signup" method="post">
+<form action="settings" method="post">
 <table>
 	<tr>
-		<th>ログインID</th><td><input type="text" name="login_id" value="${ editUser.loginId }" /></td>
+		<th>ログインID</th>
+		<td><input type="text" name="login_id" value="${ user.loginId }" /></td>
 	</tr>
 	<tr>
-		<th>パスワード</th><td><input type="password" name="password" /></td>
+		<th>パスワード</th>
+		<td><input type="password" name="password"></td>
 	</tr>
 	<tr>
 		<th>パスワード(確認用)</th><td><input type="password" name="password_check" /></td>
 	</tr>
 	<tr>
-		<th>名前</th><td><input type="text" name="name" value="${ editUser.name }" /></td>
+		<th>名前</th>
+		<td><input type="text" name="name" value="${ user.name }"></td>
 	</tr>
 	<tr>
 		<th>所属支店(本社含む)</th>
 		<td>
 			<select name="branch_id">
 				<c:forEach items="${ branches }" var="branch">
-				<option value="${ branch.id }">${ branch.name }</option>
+					<c:choose>
+						<c:when test="${ branch.id == user.positionId }">
+							<option value="${ branch.id }" selected>${ branch.name }</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${ branch.id }">${ branch.name }</option>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 			</select>
 		</td>
@@ -48,14 +58,22 @@
 		<td>
 			<select name="position_id">
 				<c:forEach items="${ positions }" var="position">
-				<option value="${ position.id }">${ position.name }</option>
+					<c:choose>
+						<c:when test="${ position.id == user.positionId }">
+							<option value="${ position.id }" selected>${ position.name }</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${ position.id }">${ position.name }</option>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 			</select>
 		</td>
 	</tr>
 </table>
-<input type="submit" value="登録"><br />
+<input type="hidden" name="user_id" value="${ user.id }" />
+<input type="hidden" name="not_entered_password" value="${ user.password }" />
+<input type="submit" value="編集">
 </form>
-<a href="./">戻る</a>
 </body>
 </html>

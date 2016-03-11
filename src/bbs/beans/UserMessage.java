@@ -8,6 +8,7 @@ public class UserMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int userId;
+	private int messageId;
 	private String subject;
 	private String text;
 	private String category;
@@ -18,6 +19,12 @@ public class UserMessage implements Serializable {
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public int getMessageId() {
+		return messageId;
+	}
+	public void setMessageId(int messageId) {
+		this.messageId = messageId;
 	}
 	public String getSubject() {
 		return subject;

@@ -57,4 +57,25 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
+	public void delteMessage(int messageId) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserMessageDao userMessageDao = new UserMessageDao();
+			userMessageDao.deleteMessage(connection, messageId);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }

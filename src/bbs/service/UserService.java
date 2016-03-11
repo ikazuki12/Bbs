@@ -36,7 +36,7 @@ public class UserService {
 			close(connection);
 		}
 	}
-	public List<User> getUser() {
+	public List<User> getUsers() {
 
 		Connection connection = null;
 		try {
@@ -48,6 +48,69 @@ public class UserService {
 			commit(connection);
 
 			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+	public void doStop(Boolean stop, int userId) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			userDao.doStop(connection, stop, userId);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public User getUser(int userId) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			User user = userDao.getUser(connection, null, null, userId);
+
+			commit(connection);
+			return user;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public void userUpdete(User user, String password) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			userDao.userUpdete(connection, user, password);
+
+			commit(connection);
 		} catch (RuntimeException e) {
 			rollback(connection);
 			throw e;

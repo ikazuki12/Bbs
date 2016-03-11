@@ -9,10 +9,78 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbs.beans.User;
+import bbs.exception.NoRowsUpdatedRuntimeException;
 import bbs.exception.SQLRuntimeException;
 
 public class UserDao {
+
+	public void userUpdete(Connection connection, User user, String password) {
+		PreparedStatement ps = null;
+		try {
+			StringBuilder mySql = new StringBuilder();
+			mySql.append("update users set ");
+			mySql.append("login_id = ?");
+			mySql.append(", name = ?");
+			mySql.append(", branch_id = ?");
+			mySql.append(", position_id = ? ");
+			if (StringUtils.isEmpty(password) == false){
+				mySql.append(", password = ?");
+			}
+			mySql.append("where ");
+			mySql.append("id = ?");
+
+			ps = connection.prepareStatement(mySql.toString());
+
+			ps.setString(1, user.getLoginId());
+			ps.setString(2, user.getName());
+			ps.setInt(3, user.getBranchId());
+			ps.setInt(4, user.getPositionId());
+			if (StringUtils.isEmpty(password) == false){
+				ps.setString(5, user.getPassword());
+				ps.setInt(6, user.getId());
+			} else {
+				ps.setInt(5, user.getId());
+			}
+
+			int count = ps.executeUpdate();
+			if (count == 0) {
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	public void doStop(Connection connection, Boolean stop, int userId) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder mySql = new StringBuilder();
+			mySql.append("update users set");
+			mySql.append(" stopped = ?");
+			mySql.append(" where");
+			mySql.append(" id = ?");
+
+			ps = connection.prepareStatement(mySql.toString());
+
+			ps.setBoolean(1, stop);
+			ps.setInt(2, userId);
+
+			int count = ps.executeUpdate();
+			if (count == 0) {
+				throw new NoRowsUpdatedRuntimeException();
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 
 	public void insert(Connection connection, User user) {
 
@@ -52,17 +120,27 @@ public class UserDao {
 		}
 	}
 
-	public User getUser(Connection connection, String loginId, String password) {
+	public User getUser(Connection connection, String loginId, String password, int userId) {
 
 		PreparedStatement ps = null;
 		try {
-			String mySql = "select * from users where login_id = ? and password = ?";
+			StringBuilder mySql = new StringBuilder();
+			if(loginId != null && password != null) {
+				mySql.append("select * from users where login_id = ? and password = ?");
+			}
 
-			ps = connection.prepareStatement(mySql);
+			else if(userId != 0) {
+				mySql.append("select * from users where id = ? ");
+			}
+			ps = connection.prepareStatement(mySql.toString());
 
-			ps.setString(1, loginId);
-			ps.setString(2, password);
-
+			if(loginId != null && password != null){
+				ps.setString(1, loginId);
+				ps.setString(2, password);
+			}
+			if(userId != 0) {
+				ps.setInt(1, userId);
+			}
 
 			ResultSet rs = ps.executeQuery();
 			List<User> userList = toUserList(rs);
@@ -159,5 +237,6 @@ public class UserDao {
 			close(rs);
 		}
 	}
+
 
 }

@@ -9,3 +9,6 @@ table.messages {
 	margin-left : auto;
 	border: 1px solid #808080;
 }
+table.messages td.delete_right {
+
+}
