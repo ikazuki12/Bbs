@@ -37,16 +37,55 @@ public class UserMessageDao {
 		}
 	}
 
-	public List<UserMessage> getUserMessage(Connection connection) {
+	public List<UserMessage> getUserMessage(Connection connection, String category, String startDate, String endDate) {
 
 		PreparedStatement ps = null;
 		try {
 			StringBuilder mySql = new StringBuilder();
 			mySql.append("select * from user_message ");
+			if (category != null) {
+				mySql.append("where ");
+				mySql.append("category = ? ");
+				if (startDate != null){
+					mySql.append("and insert_date >= ? ");
+					if (endDate != null) {
+						mySql.append("and insert_date <= ? ");
+					}
+				} else if (endDate != null) {
+					mySql.append("and insert_date <= ? ");
+				}
+			} else if (startDate != null){
+				mySql.append("where ");
+				mySql.append("insert_date >= ? ");
+				if (endDate != null) {
+					mySql.append("and insert_date <= ? ");
+				}
+			} else if (endDate != null) {
+				mySql.append("where ");
+				mySql.append("insert_date <= ? ");
+			}
 			mySql.append("order by insert_date desc");
 
 			ps = connection.prepareStatement(mySql.toString());
 
+			if (category != null) {
+				ps.setString(1, category);
+				if (startDate != null){
+					ps.setString(2, startDate);
+					if (endDate != null) {
+						ps.setString(3, endDate);
+					}
+				} else if (endDate != null) {
+					ps.setString(2, endDate);
+				}
+			} else if (startDate != null){
+				ps.setString(1, startDate);
+				if (endDate != null) {
+					ps.setString(2, endDate);
+				}
+			} else if (endDate != null) {
+				ps.setString(1, endDate);
+			}
 			ResultSet rs = ps.executeQuery();
 			List<UserMessage> ret = toMessageComment(rs);
 			return ret;

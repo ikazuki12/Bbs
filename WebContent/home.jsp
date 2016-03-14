@@ -16,23 +16,52 @@
 </c:if>
 <c:if test="${ not empty loginUser }">
 	<a href="message">新規投稿</a> /
-	<a href="control">ユーザー管理</a>
+	<a href="control">ユーザー管理</a> /
+	<a href="logout">ログアウト</a>
 <hr />
 <c:if test="${ not empty errorMessages }">
-			<ul>
-				<c:forEach items="${ errorMessages }" var="message">
-					<li><c:out value="${message}" /></li>
+	<ul>
+		<c:forEach items="${ errorMessages }" var="message">
+			<li><c:out value="${message}" /></li>
+		</c:forEach>
+	</ul>
+	<c:remove var="errorMessages" scope="session" />
+</c:if>
+<form action="messgeSelect" method="get">
+	<table class="message_select">
+		<tr>
+			<td>カテゴリー</td><td><select name="category">
+			<option value="all">全て</option>
+				<c:forEach items="${ messages }" var="message">
+					<c:choose>
+						<c:when test="${ editCategory == message.category }">
+							<option value="${ message.category }" selected>${ message.category }</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${ message.category }">${ message.category }</option>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
-			</ul>
-			<c:remove var="errorMessages" scope="session" />
-		</c:if>
+		</select></td>
+		</tr>
+		<tr>
+			<td>投稿日</td><td><input type="date" name="start_date" min="2016-01-01" value="${ editStartDate }"> ～
+					<input type="date" name="end_date" min="2016-01-01" value="${ editEndDate }"></td>
+		</tr>
+		<tr>
+			<td class="submit"><input type="submit" value="絞り込み"></td>
+		</tr>
+	</table>
+</form>
 <c:forEach items="${ messages }" var="message">
 <form action="comment" method="post">
 <input type="hidden" name="message_id" value="${ message.messageId }">
 <table class="messages">
 	<tr>
-		<td colspan="2"><c:out value="${ message.category }" /></td>
-		<td class="delete_right"><a href="?message_id=${ message.messageId }">削除</a></td>
+		<td>&nbsp;</td><td class="delete"><a class="delete" href="?message_id=${ message.messageId }&user_id=${ message.userId }">×</a></td>
+	</tr>
+	<tr>
+		<td colspan="2"><pre><c:out value="${ message.category }" /></pre></td>
 	</tr>
 	<tr>
 		<th><c:out value="${ message.subject }" /></th>
@@ -45,7 +74,7 @@
 		<fmt:formatDate value="${ message.insertDate }" pattern="yyyy年MM月dd日 HH時mm分" /></td>
 	</tr>
 	<tr>
-		<td></td><td><c:out value="${ message.text }" /></td>
+		<td colspan="3" class="message_text"><pre><c:out value="${ message.text }" /></pre></td>
 	</tr>
 	<tr>
 		<td colspan="3"><hr /></td>
@@ -55,23 +84,23 @@
 		<td>
 	</tr>
 	<c:forEach items="${ comments }" var="comment">
-		<c:if test="${ comment.messageId == message.userId }">
+		<c:if test="${ comment.messageId == message.messageId }">
 			<tr>
 				<td colspan="3"><hr /></td>
 			</tr>
 
-				<c:forEach items="${ users }" var="user">
-					<c:if test="${ user.id == comment.userId }">
-						<tr>
-							<td><c:out value="${ user.name }"></c:out></td>
-						</tr>
-					</c:if>
-				</c:forEach>
+			<c:forEach items="${ users }" var="user">
+				<c:if test="${ user.id == comment.userId }">
+					<tr>
+						<td><c:out value="${ user.name }"></c:out></td>
+					</tr>
+				</c:if>
+			</c:forEach>
 			<tr>
 				<td><fmt:formatDate value="${ comment.insertDate }" pattern="yyyy年MM月dd日 HH:mm" /></td>
 			</tr>
 			<tr>
-				<td><c:out value="${ comment.text }"></c:out></td>
+				<td class="comment_text"><pre><c:out value="${ comment.text }" /></pre></td>
 			</tr>
 		</c:if>
 	</c:forEach>
@@ -86,6 +115,10 @@
 </table>
 </form>
 </c:forEach>
+</c:if>
+<br />
+<c:if test="${ empty messages }">
+	<a href="./">戻る</a>
 </c:if>
 </body>
 </html>

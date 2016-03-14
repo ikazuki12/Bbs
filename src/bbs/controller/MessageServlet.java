@@ -64,18 +64,18 @@ public class MessageServlet extends HttpServlet {
 
 		if (StringUtils.isEmpty(subject) == true) {
 			messages.add("件名を入力してください");
+		} else if (50 < subject.length()) {
+			messages.add("件名は50文字以下で入力してください");
 		}
 		if (StringUtils.isEmpty(text) == true) {
 			messages.add("本文を入力してください");
-		}
-		if (StringUtils.isEmpty(text) == true) {
-			messages.add("カテゴリーを入力してください");
-		}
-		if (50 < category.length()) {
-			messages.add("件名は50文字以下で入力してください");
-		}
-		if (1000 < text.length()) {
+		} else if (1000 < text.length()) {
 			messages.add("本文は1000文字以下で入力してください");
+		}
+		if (StringUtils.isEmpty(category) == true) {
+				messages.add("カテゴリーを入力してください");
+		}else if (10 < category.length()) {
+			messages.add("カテゴリーはは10文字以下で入力してください");
 		}
 		if (messages.size() == 0) {
 			return true;

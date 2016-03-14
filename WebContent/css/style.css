@@ -4,11 +4,30 @@ div.comment {
 	font-weight: bold;
 }
 table.messages {
-	margin-top : 5%;
+	margin-top : 2%;
+	margin-right : auto;
+	margin-left : auto;
+	width: 55%;
+	border: 1px solid #808080;
+}
+table.messages td.message_text {
+	text-align: center;
+	height: 100px;
+	font-size: large;
+}
+table.messages td.comment_text {
+	font-size: large;
+}
+table.messages td.delete {
+	float: right;
+	border: 1px solid #004040;
+}
+a.delete{
+	text-decoration: none;
+}
+table.message_select {
+	margin-top : 2%;
 	margin-right : auto;
 	margin-left : auto;
 	border: 1px solid #808080;
-}
-table.messages td.delete_right {
-
 }

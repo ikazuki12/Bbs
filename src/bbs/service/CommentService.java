@@ -11,6 +11,27 @@ import bbs.dao.CommentDao;
 
 public class CommentService {
 
+	public void delteComment(int messageId) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			CommentDao commentDao = new CommentDao();
+			commentDao.delte(connection, messageId);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 	public void register(Comment comment) {
 
 		Connection connection = null;

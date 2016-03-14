@@ -58,6 +58,10 @@ public class SignUpServlet extends HttpServlet {
 			session.setAttribute("errorMessages", messages);
 			User editUser = user;
 			request.setAttribute("editUser", editUser);
+			List<Branch> branches = new BranchService().select();
+			request.setAttribute("branches", branches);
+			List<Position> positions = new PositionService().select();
+			request.setAttribute("positions", positions);
 
 			request.getRequestDispatcher("signup.jsp").forward(request, response);
 		}
@@ -68,23 +72,20 @@ public class SignUpServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		String passwordCheck = request.getParameter("password_check");
 		String name = request.getParameter("name");
+		List<User> users = new UserService().getUsers();
 
 		if (StringUtils.isEmpty(loginId) == true) {
 			messages.add("ログインIDを入力してください");
-		}
-		else if (loginId.length() < 6 || loginId.length() > 20) {
+		} else if (loginId.length() < 6 || loginId.length() > 20) {
 			messages.add("ログインIDの文字数は6文字以上20文字以下で入力してください");
-		}
-		else if (!loginId.matches("[a-zA-Z0-9]{6,20}")){
+		} else if (!loginId.matches("[a-zA-Z0-9]{6,20}")){
 			messages.add("ログインIDは半角英数字で入力してください");
 		}
 		if (StringUtils.isEmpty(password) == true) {
 			messages.add("パスワードを入力してください");
-		}
-		else if (password.length() < 6 || password.length() > 20) {
+		} else if (password.length() < 6 || password.length() > 20) {
 			messages.add("パスワードの文字数は6文字以上20文字以下で入力してください");
-		}
-		else if (!password.matches("[a-zA-Z0-9]{6,255}")){
+		} else if (!password.matches("[a-zA-Z0-9]{6,255}")){
 			messages.add("パスワードは半角英数字で入力してください");
 		}
 		if (!password.equals(passwordCheck)) {
@@ -92,9 +93,13 @@ public class SignUpServlet extends HttpServlet {
 		}
 		if (StringUtils.isEmpty(name) == true) {
 			messages.add("名前を入力してください");
-		}
-		if (name.length() > 10) {
+		} else if (name.length() > 10) {
 			messages.add("名前は10文字以下で入力してください");
+		}
+		for (int i = 0, size = users.size(); i < size; i++){
+			if (users.get(i).getLoginId().equals(loginId)){
+				messages.add("既に" + loginId + "は使用されています");
+			}
 		}
 		if (messages.size() == 0) {
 			return true;

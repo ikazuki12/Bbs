@@ -35,14 +35,15 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> getMessage() {
+	public List<UserMessage> getMessage(String category, String startDate, String endDate) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
 			UserMessageDao userMessageDao = new UserMessageDao();
-			List<UserMessage> ret = userMessageDao.getUserMessage(connection);
+			List<UserMessage> ret =
+					userMessageDao.getUserMessage(connection, category, startDate, endDate);
 
 			commit(connection);
 

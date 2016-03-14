@@ -55,7 +55,6 @@ public class CompileServlet extends HttpServlet {
 		if (StringUtils.isEmpty(password) == false) {
 			user.setPassword(CipherUtil.encrypt(password));
 		}
-		System.out.println(password);
 		user.setName(request.getParameter("name"));
 		user.setBranchId(Integer.parseInt(request.getParameter("branch_id")));
 		user.setPositionId(Integer.parseInt(request.getParameter("position_id")));
@@ -64,7 +63,7 @@ public class CompileServlet extends HttpServlet {
 
 			new UserService().userUpdete(user, password);
 
-			response.sendRedirect("./");
+			response.sendRedirect("/Bbs/control");
 		} else {
 			session.setAttribute("errorMessages", messages);
 			List<Branch> branches = new BranchService().select();

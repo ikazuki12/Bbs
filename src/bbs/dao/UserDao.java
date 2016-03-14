@@ -128,7 +128,6 @@ public class UserDao {
 			if(loginId != null && password != null) {
 				mySql.append("select * from users where login_id = ? and password = ?");
 			}
-
 			else if(userId != 0) {
 				mySql.append("select * from users where id = ? ");
 			}

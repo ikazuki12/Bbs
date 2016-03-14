@@ -30,4 +30,23 @@ public class PositionService {
 			close(connection);
 		}
 	}
+	public Position getPosition(int positionId) {
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			PositionDao positionDao = new PositionDao();
+			Position position = positionDao.getPosition(connection, positionId);
+
+			commit(connection);
+			return position;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }

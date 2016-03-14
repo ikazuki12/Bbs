@@ -15,6 +15,24 @@ import bbs.exception.SQLRuntimeException;
 
 public class CommentDao {
 
+	public void delte(Connection connection, int messageId) {
+		PreparedStatement ps = null;
+		try {
+			StringBuilder mySql = new StringBuilder();
+			mySql.append("delete from comments where message_id = ?");
+
+			ps = connection.prepareStatement(mySql.toString());
+
+			ps.setInt(1, messageId);
+
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
 	public void insert(Connection connection, Comment comment) {
 
 		PreparedStatement ps = null;

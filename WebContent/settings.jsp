@@ -9,6 +9,7 @@
 <title>ユーザー編集</title>
 </head>
 <body>
+<h3>ユーザー編集</h3>
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>
@@ -75,5 +76,6 @@
 <input type="hidden" name="not_entered_password" value="${ user.password }" />
 <input type="submit" value="編集">
 </form>
+<a href="control">戻る</a>
 </body>
 </html>

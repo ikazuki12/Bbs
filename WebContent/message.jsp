@@ -11,7 +11,7 @@
 <body>
 <h3>新規投稿</h3>
 <hr />
-<c:if test="${ not empty errorMessags }">
+<c:if test="${ not empty errorMessages }">
 	<ul>
 		<c:forEach items="${ errorMessages }" var="message">
 			<li><c:out value="${message}" /></li>
@@ -21,21 +21,22 @@
 </c:if>
 <c:if test="${ empty loginUser }">
 ログインしてください。
+<a href="./">戻る</a>
 </c:if>
 <c:if test="${ not empty loginUser }">
 	<form action="message" method="post">
 		<table border="1">
 			<tr>
 				<th>件名</th>
-				<td><input type="text" name="subject" size="50"></td>
+				<td><input type="text" name="subject" size="50" value="${ editMessage.subject }"></td>
 			</tr>
 			<tr>
 				<th>本文</th>
-				<td><textarea rows="25" cols="100" name="text"></textarea></td>
+				<td><textarea rows="20" cols="80" name="text" >${ editMessage.text }</textarea></td>
 			</tr>
 			<tr>
 				<th>カテゴリー</th>
-				<td><input type="text" name="category"></td>
+				<td><input type="text" name="category" value="${ editMessage.category }" size="35"></td>
 			</tr>
 		</table>
 		<input type="submit" value="投稿" />
