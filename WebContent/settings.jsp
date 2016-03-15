@@ -5,23 +5,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ユーザー編集</title>
 </head>
 <body>
-<h3>ユーザー編集</h3>
+<div class="menu">
+	<a href="control">戻る</a>
+</div>
+<div class="user_name">
+	<c:out value="${ loginUser.name }" />
+</div>
+<hr />
+<div class="main">
+<h3>社員編集</h3>
 <c:if test="${ not empty errorMessages }">
 	<div class="errorMessages">
 		<ul>
 			<c:forEach items="${ errorMessages }" var="message">
-				<li><c:out value="${message}" />
+				<li><span><c:out value="${message}" /></span></li>
 			</c:forEach>
 		</ul>
 	</div>
 	<c:remove var="errorMessages" scope="session"/>
 </c:if>
 <form action="settings" method="post">
-<table>
+<table class="setting">
 	<tr>
 		<th>ログインID</th>
 		<td><input type="text" name="login_id" value="${ user.loginId }" /></td>
@@ -55,7 +64,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>所属先(部署・役職)</th>
+		<th>部署・役職</th>
 		<td>
 			<select name="position_id">
 				<c:forEach items="${ positions }" var="position">
@@ -72,10 +81,12 @@
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="user_id" value="${ user.id }" />
-<input type="hidden" name="not_entered_password" value="${ user.password }" />
-<input type="submit" value="編集">
+<div class="submit">
+	<input type="hidden" name="user_id" value="${ user.id }" />
+	<input type="hidden" name="not_entered_password" value="${ user.password }" />
+	<input type="submit" value="編集">
+</div>
 </form>
-<a href="control">戻る</a>
+</div>
 </body>
 </html>

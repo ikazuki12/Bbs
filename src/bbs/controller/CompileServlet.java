@@ -78,10 +78,10 @@ public class CompileServlet extends HttpServlet {
 	}
 
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
-		String loginId = request.getParameter("login_id");
-		String password = request.getParameter("password");
-		String passwordCheck = request.getParameter("password_check");
-		String name = request.getParameter("name");
+		String loginId = trim(request.getParameter("login_id").trim());
+		String password = trim(request.getParameter("password")).trim();
+		String passwordCheck = trim(request.getParameter("password_check")).trim();
+		String name = trim(request.getParameter("name")).trim();
 
 		if (StringUtils.isEmpty(loginId) == true) {
 			messages.add("ログインIDを入力してください");
@@ -111,5 +111,21 @@ public class CompileServlet extends HttpServlet {
 		} else {
 			return false;
 		}
+	}
+
+	public static String trim(String str) {
+	    if (str == null) {
+	        return null;
+	    }
+
+	    char[] val = str.toCharArray();
+	    int len = val.length;
+	    int st = 0;
+
+	    while ((st < len) && (val[len - 1] <= ' ' || val[len - 1] == '　')) {
+	        len--;
+	    }
+
+	    return ((st>0) || (len<val.length)) ? str.substring(st,len):str;
 	}
 }

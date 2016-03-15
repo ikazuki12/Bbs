@@ -5,22 +5,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>新規登録</title>
 </head>
 <body>
+<div class="menu">
+	<a href="control">戻る</a>
+</div>
+<div class="user_name">
+	<c:out value="${ loginUser.name }" />
+</div>
+<hr />
 <c:if test="${ not empty errorMessages }">
-	<div class="errorMessages">
-		<ul>
-			<c:forEach items="${ errorMessages }" var="message">
-				<li><c:out value="${message}" />
-			</c:forEach>
-		</ul>
-	</div>
-	<c:remove var="errorMessages" scope="session"/>
+	<ul>
+		<c:forEach items="${ errorMessages }" var="message">
+			<li><span><c:out value="${message}" /></span></li>
+		</c:forEach>
+	</ul>
+	<c:remove var="errorMessages" scope="session" />
 </c:if>
+<div class="main">
+<h3>社員登録</h3>
 <form action="signup" method="post">
-<table>
+<table class="signup">
 	<tr>
 		<th>ログインID</th><td><input type="text" name="login_id" value="${ editUser.loginId }" /></td>
 	</tr>
@@ -44,7 +52,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>所属先(部署・役職)</th>
+		<th>部署・役職</th>
 		<td>
 			<select name="position_id">
 				<c:forEach items="${ positions }" var="position">
@@ -54,8 +62,8 @@
 		</td>
 	</tr>
 </table>
-<input type="submit" value="登録"><br />
+<div class="submit"><input type="submit" value="登録"></div>
 </form>
-<a href="./">戻る</a>
+</div>
 </body>
 </html>

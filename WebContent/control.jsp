@@ -5,6 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ユーザー管理</title>
 
@@ -13,14 +14,14 @@
 
 function stopped(){
 
-    if(window.confirm('停止しますか？')){
+    if(window.confirm('停止してもよろしいですか？')){
 
     }
 }
 
 function stop(){
 
-    if(window.confirm('停止しますか？')){
+    if(window.confirm('復活してもよろしいですか？')){
 
     }
 }
@@ -29,10 +30,17 @@ function stop(){
 </script>
 </head>
 <body>
-<a href="signup">ユーザー新規登録</a>
+<div class="menu">
+	<a href="signup">新規登録</a> /
+	<a href="./">戻る</a>
+</div>
+<div class="user_name">
+	<c:out value="${ loginUser.name }" />
+</div>
 <hr />
-<h3>ユーザー一覧</h3>
-<table class="control" border="1">
+<div class="main">
+<h3>社員一覧</h3>
+<table class="control">
 	<tr>
 		<th>名前</th>
 		<th>ログインID</th>
@@ -67,7 +75,6 @@ function stop(){
 		</tr>
 	</c:forEach>
 </table>
-<br />
-<a href="./">戻る</a>
+</div>
 </body>
 </html>

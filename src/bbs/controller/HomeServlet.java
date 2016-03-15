@@ -29,16 +29,12 @@ public class HomeServlet extends HttpServlet {
 			throws IOException, ServletException {
 
 		User user = (User) request.getSession().getAttribute("loginUser");
-		boolean isShowMessageForm;
-		if (user != null) {
-			isShowMessageForm = true;
-		} else {
-			isShowMessageForm = false;
-		}
 
 		HttpSession session = request.getSession();
 
 		List<String> errorMessages = new ArrayList<String>();
+
+		String deleteMessage = null;
 
 		if(request.getParameter("message_id") != null) {
 			int messageId = Integer.parseInt(request.getParameter("message_id"));
@@ -48,12 +44,16 @@ public class HomeServlet extends HttpServlet {
 			if (position.getName().equals("情報管理当者")) {
 				new MessageService().delteMessage(messageId);
 				new CommentService().delteComment(messageId);
+				deleteMessage = messageId + "の投稿を削除しました";
+				session.setAttribute("deleteMessage", deleteMessage);
 			} else if (position.getName().equals("支店長")) {
 				int positionId = userSelect.getPositionId();
 				position = new PositionService().getPosition(positionId);
 				if (user.getBranchId() == userSelect.getBranchId() && position.getName().equals("社員")) {
 					new MessageService().delteMessage(messageId);
 					new CommentService().delteComment(messageId);
+					deleteMessage = messageId + "の投稿を削除しました";
+					session.setAttribute("deleteMessage", deleteMessage);
 				}
 			} else {
 				errorMessages.add("削除する権限がありません");
@@ -63,6 +63,7 @@ public class HomeServlet extends HttpServlet {
 
 		List<UserMessage> messages = new MessageService().getMessage(null, null, null);
 		request.setAttribute("messages", messages);
+		request.setAttribute("selectMessages", messages);
 
 		List<Comment> comments = new CommentService().getComment();
 		request.setAttribute("comments", comments);
@@ -70,8 +71,14 @@ public class HomeServlet extends HttpServlet {
 		List<User> users = new UserService().getUsers();
 		request.setAttribute("users", users);
 
+		boolean isShowMessageForm;
+		if (user != null) {
+			isShowMessageForm = true;
+			request.getRequestDispatcher("./home.jsp").forward(request, response);
+		} else {
+			isShowMessageForm = false;
+			response.sendRedirect("./login");
+		}
 		request.setAttribute("isShowMessageFrom", isShowMessageForm);
-
-		request.getRequestDispatcher("./home.jsp").forward(request, response);
 	}
 }

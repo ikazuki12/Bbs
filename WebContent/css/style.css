@@ -1,22 +1,53 @@
 @CHARSET "UTF-8";
 
+
+ul {
+	list-style-type: circle;
+}
+ul li span {
+	color: red;
+}
+ul.delete_message li span {
+	color: #80ffff;
+}
+div.menu {
+	float: left;
+}
+div.user_name {
+	text-align:right;
+}
 div.comment {
 	font-weight: bold;
 }
-table.messages {
+div.messages {
+	margin-top : 100%;
 	margin-top : 2%;
+}
+div.messages div.message_id {
+
+}
+table.messages {
 	margin-right : auto;
 	margin-left : auto;
 	width: 55%;
 	border: 1px solid #808080;
+	table-layout: fixed;
 }
 table.messages td.message_text {
 	text-align: center;
 	height: 100px;
 	font-size: large;
 }
+table.messages td.message_text pre {
+	width: 80%;
+	word-wrap: break-word;
+}
 table.messages td.comment_text {
 	font-size: large;
+}
+table.messages td.comment_text pre {
+	width: 80%;
+	word-wrap: break-word;
 }
 table.messages td.delete {
 	float: right;
@@ -30,4 +61,82 @@ table.message_select {
 	margin-right : auto;
 	margin-left : auto;
 	border: 1px solid #808080;
+}
+table.login {
+	margin-top : 5%;
+	margin-right : auto;
+	margin-left : auto;
+	width: 35%;
+	height: 200px;
+	border: 3px solid #c0c0c0;
+	border-collapse: collapse;
+}
+table.login td.title{
+	font-size: x-large;
+	text-align: center;
+	font-weight: 800;
+	border: 3px solid #c0c0c0;
+}
+div.main {
+	width: 50%;
+    margin: 0 auto;
+    margin-top : 2%;
+}
+table.control {
+	width: 80%;
+	height: 200px;
+	border: 1px solid #c0c0c0;
+	border-collapse: collapse;
+}
+table.control th {
+	height: 30px;
+	border: 1px solid #c0c0c0;
+}
+table.control td {
+	height: 20px;
+	padding-left: 4%;
+	border: 1px solid #c0c0c0;
+}
+table.setting {
+	width: 80%;
+	height: 200px;
+	margin-right : auto;
+	margin-left : auto;
+	border: 1px solid #c0c0c0;
+	border-collapse: collapse;
+}
+table.setting th {
+	border: 1px solid #c0c0c0;
+}
+table.setting td {
+	padding-left: 10%;
+	border: 1px solid #c0c0c0;
+}
+div.submit {
+	margin-top : 5%;
+}
+table.message {
+	border: 1px solid #c0c0c0;
+	width: 100%;
+}
+table.message th {
+	vertical-align: top;
+}
+table.signup {
+	width: 80%;
+	height: 200px;
+	margin-right : auto;
+	margin-left : auto;
+	border: 1px solid #c0c0c0;
+	border-collapse: collapse;
+}
+table.signup th {
+	border: 1px solid #c0c0c0;
+}
+table.signup td {
+	padding-left: 10%;
+	border: 1px solid #c0c0c0;
+}
+div.submit {
+	text-align: center;
 }

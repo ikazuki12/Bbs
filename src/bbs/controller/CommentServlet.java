@@ -59,7 +59,7 @@ public class CommentServlet extends HttpServlet {
 
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 
-		String message = request.getParameter("text");
+		String message = trim(request.getParameter("text")).trim();
 
 		if (StringUtils.isEmpty(message) == true) {
 			messages.add("内容を入力してください");
@@ -72,5 +72,21 @@ public class CommentServlet extends HttpServlet {
 		} else {
 			return false;
 		}
+	}
+
+	public static String trim(String str) {
+	    if (str == null) {
+	        return null;
+	    }
+
+	    char[] val = str.toCharArray();
+	    int len = val.length;
+	    int st = 0;
+
+	    while ((st < len) && (val[len - 1] <= ' ' || val[len - 1] == '　')) {
+	        len--;
+	    }
+
+	    return ((st>0) || (len<val.length)) ? str.substring(st,len):str;
 	}
 }

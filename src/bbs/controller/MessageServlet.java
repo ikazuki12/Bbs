@@ -34,9 +34,9 @@ public class MessageServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		Message message = new Message();
-		message.setSubject(request.getParameter("subject"));
-		message.setText(request.getParameter("text"));
-		message.setCategory(request.getParameter("category"));
+		message.setSubject(trim(request.getParameter("subject").trim()));
+		message.setText(trim(request.getParameter("text").trim()));
+		message.setCategory(trim(request.getParameter("category").trim()));
 
 		List<String> messages = new ArrayList<String>();
 
@@ -58,9 +58,9 @@ public class MessageServlet extends HttpServlet {
 
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 
-		String subject = request.getParameter("subject");
-		String text = request.getParameter("text");
-		String category = request.getParameter("category");
+		String subject = trim(request.getParameter("subject").trim());
+		String text = trim(request.getParameter("text").trim());
+		String category = trim(request.getParameter("category").trim());
 
 		if (StringUtils.isEmpty(subject) == true) {
 			messages.add("件名を入力してください");
@@ -82,5 +82,21 @@ public class MessageServlet extends HttpServlet {
 		} else {
 			return false;
 		}
+	}
+
+	public static String trim(String str) {
+	    if (str == null) {
+	        return null;
+	    }
+
+	    char[] val = str.toCharArray();
+	    int len = val.length;
+	    int st = 0;
+
+	    while ((st < len) && (val[len - 1] <= ' ' || val[len - 1] == '　')) {
+	        len--;
+	    }
+
+	    return ((st>0) || (len<val.length)) ? str.substring(st,len):str;
 	}
 }

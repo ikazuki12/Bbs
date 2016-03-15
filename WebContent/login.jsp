@@ -5,6 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ログイン</title>
 </head>
@@ -12,13 +13,16 @@
 <c:if test="${ not empty errorMessages }">
 	<ul>
 		<c:forEach items="${ errorMessages }" var="message">
-			<li><c:out value="${message}" /></li>
+			<li><span><c:out value="${message}" /></span></li>
 		</c:forEach>
 	</ul>
 	<c:remove var="errorMessages" scope="session" />
 </c:if>
 <form action="login" method="post">
-<table>
+<table class="login">
+	<tr>
+		<td class="title" colspan="2">ログイン</td>
+	</tr>
 	<tr>
 		<th><label for="login_id">ログインID</label></th>
 		<td><input name="login_id" value="${ editUser }" /></td>
@@ -27,9 +31,10 @@
 		<th><label for="password">パスワード</label></th>
 		<td><input name="password" type="password" /></td>
 	</tr>
+	<tr>
+		<th colspan="2"><input type="submit" value="ログイン"></th>
+	</tr>
 </table>
-	<input type="submit" value="ログイン"><br />
-	<a href="./">戻る</a>
 </form>
 </body>
 </html>

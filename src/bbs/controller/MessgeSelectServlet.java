@@ -31,7 +31,7 @@ public class MessgeSelectServlet extends HttpServlet {
 		String category = request.getParameter("category");
 		String startDate = request.getParameter("start_date");
 		String endDate = request.getParameter("end_date");
-		List<UserMessage> messages = new ArrayList<UserMessage>();
+		List<UserMessage> selectMessages = new ArrayList<UserMessage>();
 
 		HttpSession session = request.getSession();
 
@@ -46,10 +46,10 @@ public class MessgeSelectServlet extends HttpServlet {
 		if (StringUtils.isEmpty(endDate) == true) {
 			endDate = null;
 		}
-		messages = new MessageService().getMessage(category, startDate, endDate);
+		selectMessages = new MessageService().getMessage(category, startDate, endDate);
 
-		if (messages.size() != 0) {
-			request.setAttribute("messages", messages);
+		if (selectMessages.size() != 0) {
+			request.setAttribute("messages", selectMessages);
 			List<Comment> comments = new CommentService().getComment();
 			request.setAttribute("comments", comments);
 
@@ -60,9 +60,12 @@ public class MessgeSelectServlet extends HttpServlet {
 			session.setAttribute("errorMessages", errorMessages);
 		}
 
+		List<UserMessage> messages = new MessageService().getMessage(null, null, null);
+		request.setAttribute("selectMessages", messages);
 		request.setAttribute("editCategory", category);
 		request.setAttribute("editStartDate", startDate);
-		request.setAttribute("editEndtDate", endDate);
+		request.setAttribute("editEndDate", endDate);
+		request.setAttribute("getParameter", "notNull");
 
 		request.getRequestDispatcher("./home.jsp").forward(request, response);
 
