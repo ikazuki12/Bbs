@@ -9,17 +9,6 @@
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>掲示板ホーム</title>
-
-<script language="JavaScript">
-<!--
-<c:if test="${ empty loginUser }">
-	function autoLink() {
-		location.href="login";
-	}
-	setTimeout("autoLink()",0);
-</c:if>
-// -->
-</script>
 </head>
 <body>
 <div class="menu">

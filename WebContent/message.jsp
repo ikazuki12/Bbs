@@ -10,14 +10,6 @@
 <title>新規投稿</title>
 
 <script language="JavaScript">
-<!--
-<c:if test="${ empty loginUser }">
-	function autoLink() {
-		location.href="login";
-	}
-	setTimeout("autoLink()",0);
-</c:if>
-// -->
 </script>
 </head>
 <body>

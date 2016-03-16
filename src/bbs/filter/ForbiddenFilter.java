@@ -25,7 +25,7 @@ public class ForbiddenFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		try {
 
-			User loginUser = (User) ((HttpServletRequest)request).getSession().getAttribute("loginUser");
+			User loginUser = (User) ((HttpServletRequest) request).getSession().getAttribute("loginUser");
 
 			HttpSession session = ((HttpServletRequest)request).getSession();
 
