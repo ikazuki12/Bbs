@@ -24,6 +24,7 @@ public class MessageService {
 			messageDao.insert(connection, message);
 
 			commit(connection);
+
 		} catch (RuntimeException e) {
 			rollback(connection);
 			throw e;
@@ -35,7 +36,31 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> getMessage(String category, String startDate, String endDate) {
+	public Message getMessage(Message message) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			MessageDao messageDao = new MessageDao();
+
+			message = messageDao.getMessage(connection, message);
+
+			commit(connection);
+
+			return message;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public List<UserMessage> getMessages(String category, String startDate, String endDate) {
 
 		Connection connection = null;
 		try {

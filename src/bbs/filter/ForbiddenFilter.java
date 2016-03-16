@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bbs.beans.Position;
 import bbs.beans.User;
-import bbs.service.PositionService;
 
 @WebFilter(urlPatterns = { "/signup.jsp", "/signup", "/control.jsp", "/control", "/settings.jsp", "/settings" })
 public class ForbiddenFilter implements Filter {
@@ -33,16 +31,22 @@ public class ForbiddenFilter implements Filter {
 
 			List<String> messages = new ArrayList<String>();
 
-			Position position = new PositionService().getPosition(loginUser.getPositionId());
+			if (loginUser != null) {
 
-			if(!position.getName().equals("総務人事担当者")) {
+				Integer positonId = new Integer(loginUser.getPositionId());
+				if (!positonId.equals(1)) {
 
-				messages.add("アクセス権限がありません");
-				session.setAttribute("errorMessages", messages);
+					messages.add("アクセス権限がありません");
+					session.setAttribute("errorMessages", messages);
+					((HttpServletResponse)response).sendRedirect("./");
+					return;
+				} else {
+
+					chain.doFilter(request, response);
+				}
+			} else {
 				((HttpServletResponse)response).sendRedirect("./");
 				return;
-			}else {
-				chain.doFilter(request, response);
 			}
 		} catch (ServletException se) {
 

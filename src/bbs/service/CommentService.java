@@ -11,14 +11,14 @@ import bbs.dao.CommentDao;
 
 public class CommentService {
 
-	public void delteComment(int messageId) {
+	public void delteComment(int messageId, int commentId) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
 			CommentDao commentDao = new CommentDao();
-			commentDao.delte(connection, messageId);
+			commentDao.delte(connection, messageId, commentId);
 
 			commit(connection);
 		} catch (RuntimeException e) {

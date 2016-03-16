@@ -7,8 +7,8 @@ ul {
 ul li span {
 	color: red;
 }
-ul.delete_message li span {
-	color: #80ffff;
+ul.success_messaeg li span {
+	color: #0000ff;
 }
 div.menu {
 	float: left;
@@ -27,6 +27,7 @@ div.messages div.message_id {
 
 }
 table.messages {
+	margin-top: 5%;
 	margin-right : auto;
 	margin-left : auto;
 	width: 55%;

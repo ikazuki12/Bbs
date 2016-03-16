@@ -15,15 +15,26 @@ import bbs.exception.SQLRuntimeException;
 
 public class CommentDao {
 
-	public void delte(Connection connection, int messageId) {
+	public void delte(Connection connection, int messageId, int commentId) {
+
 		PreparedStatement ps = null;
 		try {
 			StringBuilder mySql = new StringBuilder();
-			mySql.append("delete from comments where message_id = ?");
+			mySql.append("delete from comments where ");
+			if (messageId != 0) {
+				mySql.append("message_id = ?");
+			} else if (commentId != 0) {
+				mySql.append("id = ?");
+			}
 
 			ps = connection.prepareStatement(mySql.toString());
 
-			ps.setInt(1, messageId);
+			if (messageId != 0) {
+				ps.setInt(1, messageId);
+			} else if (commentId != 0) {
+				ps.setInt(1, commentId);
+			}
+
 
 			ps.executeUpdate();
 		} catch (SQLException e) {

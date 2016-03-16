@@ -8,6 +8,17 @@
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>新規投稿</title>
+
+<script language="JavaScript">
+<!--
+<c:if test="${ empty loginUser }">
+	function autoLink() {
+		location.href="login";
+	}
+	setTimeout("autoLink()",0);
+</c:if>
+// -->
+</script>
 </head>
 <body>
 <div class="menu">
@@ -26,10 +37,6 @@
 		</c:forEach>
 	</ul>
 	<c:remove var="errorMessages" scope="session" />
-</c:if>
-<c:if test="${ empty loginUser }">
-ログインしてください。
-<a href="./">戻る</a>
 </c:if>
 <c:if test="${ not empty loginUser }">
 	<form action="message" method="post">

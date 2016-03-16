@@ -32,6 +32,8 @@ public class MessageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
+		String successMessage = null;
+
 		HttpSession session = request.getSession();
 		Message message = new Message();
 		message.setSubject(trim(request.getParameter("subject").trim()));
@@ -46,6 +48,12 @@ public class MessageServlet extends HttpServlet {
 			message.setUserId(user.getId());
 
 			new MessageService().register(message);
+
+			message = new MessageService().getMessage(message);
+
+			successMessage = "投稿" + message.getId() + "を追加しました";
+
+			session.setAttribute("successMessage", successMessage);
 
 			response.sendRedirect("./");
 		} else {

@@ -9,23 +9,30 @@
 <link href="./css/style.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>掲示板ホーム</title>
+
+<script language="JavaScript">
+<!--
+<c:if test="${ empty loginUser }">
+	function autoLink() {
+		location.href="login";
+	}
+	setTimeout("autoLink()",0);
+</c:if>
+// -->
+</script>
 </head>
 <body>
-<c:if test="${ empty loginUser }">
-<a href="login">ログイン</a>
-</c:if>
-<c:if test="${ not empty loginUser }">
-	<div class="menu">
-		<a href="message">新規投稿</a> /
-		<a href="control">ユーザー管理</a> /
-		<a href="logout">ログアウト</a>
-		<c:if test="${ not empty getParameter }">
-			 / <a href="./">戻る</a>
-		</c:if>
-	</div>
-	<div class="user_name">
-		<c:out value="${ loginUser.name }" />
-	</div>
+<div class="menu">
+	<a href="message">新規投稿</a> /
+	<a href="control">ユーザー管理</a> /
+	<a href="logout">ログアウト</a>
+	<c:if test="${ not empty getParameter }">
+		 / <a href="./">戻る</a>
+	</c:if>
+</div>
+<div class="user_name">
+	<c:out value="${ loginUser.name }" />
+</div>
 <hr />
 <h2>掲示板一覧</h2>
 <c:if test="${ not empty errorMessages }">
@@ -36,13 +43,11 @@
 	</ul>
 	<c:remove var="errorMessages" scope="session" />
 </c:if>
-<c:if test="${ not empty deleteMessage }">
-	<ul class="delet_messaeg">
-		<c:forEach items="${ errorMessages }" var="message">
-			<li><span><c:out value="${message}" /></span></li>
-		</c:forEach>
+<c:if test="${ not empty successMessage }">
+	<ul class="success_messaeg">
+		<li><span><c:out value="${successMessage}" /></span></li>
 	</ul>
-	<c:remove var="errorMessages" scope="session" />
+	<c:remove var="successMessage" scope="session" />
 </c:if>
 <form action="messgeSelect" method="get">
 	<table class="message_select">
@@ -76,7 +81,9 @@
 <input type="hidden" name="message_id" value="${ message.messageId }">
 <table class="messages"  >
 	<tr>
-		<td><c:out value="${ message.messageId }" />.</td><td>&nbsp;</td><td class="delete"><a class="delete" href="?message_id=${ message.messageId }&user_id=${ message.userId }">×</a></td>
+		<td><c:out value="${ message.messageId }" />.</td>
+		<td>&nbsp;</td><td class="delete">
+		<a class="delete" href="delete?message_id=${ message.messageId }&user_id=${ message.userId }">×</a></td>
 	</tr>
 	<tr>
 		<td colspan="2"><pre><c:out value="${ message.category }" /></pre></td>
@@ -106,6 +113,16 @@
 			<tr>
 				<td colspan="3"><hr /></td>
 			</tr>
+			<tr>
+				<td><c:out value="${ comment.id }" />.</td>
+				<td>&nbsp;</td>
+				<td class="delete">
+					<a class="delete"
+						href="delete?message_id=${ message.messageId }&comment_id=${ comment.id }&user_id=${ comment.userId }">
+						×
+					</a>
+				</td>
+			</tr>
 			<c:forEach items="${ users }" var="user">
 				<c:if test="${ user.id == comment.userId }">
 					<tr>
@@ -130,9 +147,7 @@
 	<tr>
 		<td>&nbsp;</td><td><input type="submit" value="コメントする"></td>
 </table>
-</div>
 </form>
 </c:forEach>
-</c:if>
 </body>
 </html>

@@ -41,12 +41,16 @@ public class MessgeSelectServlet extends HttpServlet {
 			category = null;
 		}
 		if (StringUtils.isEmpty(startDate) == true) {
-			startDate = null;
+			if (StringUtils.isEmpty(endDate) == true) {
+				startDate = null;
+				endDate = null;
+			} else {
+				startDate = "0000-00-00";
+			}
+		} else if (StringUtils.isEmpty(endDate) == true) {
+			endDate = "0000-00-00";
 		}
-		if (StringUtils.isEmpty(endDate) == true) {
-			endDate = null;
-		}
-		selectMessages = new MessageService().getMessage(category, startDate, endDate);
+		selectMessages = new MessageService().getMessages(category, startDate, endDate);
 
 		if (selectMessages.size() != 0) {
 			request.setAttribute("messages", selectMessages);
@@ -60,7 +64,7 @@ public class MessgeSelectServlet extends HttpServlet {
 			session.setAttribute("errorMessages", errorMessages);
 		}
 
-		List<UserMessage> messages = new MessageService().getMessage(null, null, null);
+		List<UserMessage> messages = new MessageService().getMessages(null, null, null);
 		request.setAttribute("selectMessages", messages);
 		request.setAttribute("editCategory", category);
 		request.setAttribute("editStartDate", startDate);

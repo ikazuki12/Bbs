@@ -22,7 +22,7 @@ import bbs.service.UserService;
 import bbs.utils.CipherUtil;
 
 @WebServlet(urlPatterns = { "/settings" })
-public class CompileServlet extends HttpServlet {
+public class UserChangesServlet extends HttpServlet {
 	private static final long serialVersionUID  = 1L;
 
 	@Override
@@ -45,6 +45,8 @@ public class CompileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String successMessage = null;
+
 		List<String> messages = new ArrayList<String>();
 
 		String password = request.getParameter("password");
@@ -62,6 +64,10 @@ public class CompileServlet extends HttpServlet {
 		if (isValid(request, messages) == true) {
 
 			new UserService().userUpdete(user, password);
+
+			successMessage = "編集が完了しました";
+
+			session.setAttribute("successMessage", successMessage);
 
 			response.sendRedirect("/Bbs/control");
 		} else {

@@ -38,6 +38,12 @@ function stop(){
 	<c:out value="${ loginUser.name }" />
 </div>
 <hr />
+<c:if test="${ not empty successMessage }">
+	<ul class="success_messaeg">
+		<li><span><c:out value="${successMessage}" /></span></li>
+	</ul>
+	<c:remove var="successMessage" scope="session" />
+</c:if>
 <div class="main">
 <h3>社員一覧</h3>
 <table class="control">

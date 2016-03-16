@@ -39,6 +39,8 @@ public class SignUpServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
+		String successMessage = null;
+
 		List<String> messages = new ArrayList<String>();
 		User user = new User();
 		user.setLoginId(request.getParameter("login_id"));
@@ -52,6 +54,10 @@ public class SignUpServlet extends HttpServlet {
 		if(isValid(request, messages) == true) {
 
 			new UserService().register(user);
+
+			successMessage = "新規登録が完了しました";
+
+			session.setAttribute("successMessage", successMessage);
 
 			response.sendRedirect("./");
 		} else {

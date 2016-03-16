@@ -46,23 +46,20 @@ public class UserMessageDao {
 			if (category != null) {
 				mySql.append("where ");
 				mySql.append("category = ? ");
-				if (startDate != null){
-					mySql.append("and insert_date >= ? ");
-					if (endDate != null) {
-						mySql.append("and insert_date <= ? ");
+				if (startDate != null && endDate != null) {
+					if (endDate.equals("0000-00-00")) {
+						mySql.append("and insert_date >= ? ");
+					} else {
+						mySql.append("and date(insert_date) between ? and  ? ");
 					}
-				} else if (endDate != null) {
-					mySql.append("and insert_date <= ? ");
 				}
-			} else if (startDate != null){
+			} else if (startDate != null && endDate != null) {
 				mySql.append("where ");
-				mySql.append("insert_date >= ? ");
-				if (endDate != null) {
-					mySql.append("and insert_date <= ? ");
+				if (endDate.equals("0000-00-00")) {
+					mySql.append("insert_date >= ? ");
+				} else {
+					mySql.append("date(insert_date) between ? and  ? ");
 				}
-			} else if (endDate != null) {
-				mySql.append("where ");
-				mySql.append("insert_date <= ? ");
 			}
 			mySql.append("order by insert_date desc");
 
@@ -70,21 +67,21 @@ public class UserMessageDao {
 
 			if (category != null) {
 				ps.setString(1, category);
-				if (startDate != null){
-					ps.setString(2, startDate);
-					if (endDate != null) {
+				if (startDate != null && endDate != null) {
+					if (endDate.equals("0000-00-00")) {
+						ps.setString(2, startDate);
+					} else {
+						ps.setString(2, startDate);
 						ps.setString(3, endDate);
 					}
-				} else if (endDate != null) {
+				}
+			} else if (startDate != null && endDate != null) {
+				if (endDate.equals("0000-00-00")) {
+					ps.setString(1, startDate);
+				} else {
+					ps.setString(1, startDate);
 					ps.setString(2, endDate);
 				}
-			} else if (startDate != null){
-				ps.setString(1, startDate);
-				if (endDate != null) {
-					ps.setString(2, endDate);
-				}
-			} else if (endDate != null) {
-				ps.setString(1, endDate);
 			}
 			ResultSet rs = ps.executeQuery();
 			List<UserMessage> ret = toMessageComment(rs);
