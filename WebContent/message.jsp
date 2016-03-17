@@ -35,7 +35,7 @@
 		<table class="message">
 			<tr>
 				<th>件名</th>
-				<td><input type="text" name="subject" size="50" value="${ editMessage.subject }"></td>
+				<td><textarea rows="3" cols="50" name="subject" >${ editMessage.subject }</textarea></td>
 			</tr>
 			<tr>
 				<td colspan="2"><hr></td>

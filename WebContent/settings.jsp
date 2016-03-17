@@ -52,7 +52,7 @@
 			<select name="branch_id">
 				<c:forEach items="${ branches }" var="branch">
 					<c:choose>
-						<c:when test="${ branch.id == user.positionId }">
+						<c:when test="${ branch.id == user.branchId }">
 							<option value="${ branch.id }" selected>${ branch.name }</option>
 						</c:when>
 						<c:otherwise>

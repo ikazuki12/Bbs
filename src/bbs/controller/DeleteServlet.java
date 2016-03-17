@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bbs.beans.Comment;
-import bbs.beans.Position;
 import bbs.beans.User;
 import bbs.beans.UserMessage;
 import bbs.service.CommentService;
 import bbs.service.MessageService;
-import bbs.service.PositionService;
 import bbs.service.UserService;
 
 @WebServlet(urlPatterns = { "/delete" })
@@ -41,38 +39,40 @@ public class DeleteServlet extends HttpServlet {
 			Integer messageUserId = new Integer(request.getParameter("user_id"));
 			User userSelect = new UserService().getUser(messageUserId);
 			Integer branchId = new Integer(userSelect.getBranchId());
-			if (branchId.equals(2)) {
+			Integer positionId = new Integer(user.getPositionId());
+			if (positionId.equals(2)) {
 				new CommentService().delteComment(0, commentId);
-				successMessage = String.format("投稿%sのコメント%sを削除しました", messageId, commentId);
-//				successMessage = "投稿" + messageId + "のコメント" + commentId + "を削除しました";
-			} else if (branchId.equals(3)) {
-				Integer positionId = new Integer(userSelect.getPositionId());
-				if (branchId.equals(user.getBranchId()) && positionId.equals(3)) {
+				successMessage = String.format("投稿[%s]のコメント[%s]を削除しました", messageId, commentId);
+			} else if (positionId.equals(3)) {
+				if (branchId.equals(user.getBranchId()) && userSelect.getPositionId() == 4) {
 					new CommentService().delteComment(0, commentId);
-					successMessage = String.format("投稿%sのコメント%sを削除しました", messageId, commentId);
+					successMessage = String.format("投稿[%s]のコメント[%s]を削除しました", messageId, commentId);
 
+				} else {
+					errorMessages.add("削除する権限がありません");
 				}
 			} else {
 				errorMessages.add("削除する権限がありません");
 			}
 		} else {
 			if(request.getParameter("message_id") != null) {
-				int messageId = Integer.parseInt(request.getParameter("message_id"));
-				int messageUserId = Integer.parseInt(request.getParameter("user_id"));
+				Integer messageId = new Integer(request.getParameter("message_id"));
+				Integer messageUserId = new Integer(request.getParameter("user_id"));
 				User userSelect = new UserService().getUser(messageUserId);
-				Position loginUserPosition = new PositionService().getPosition(user.getPositionId());
-				if (loginUserPosition.getName().equals("情報管理当者")) {
+				Integer branchId = new Integer(userSelect.getBranchId());
+				Integer positionId = new Integer(user.getPositionId());
+				if (user.getPositionId() == 2) {
 					new MessageService().delteMessage(messageId);
 					new CommentService().delteComment(messageId, 0);
-					successMessage = String.format("投稿%sを削除しました", messageId);
-				} else if (loginUserPosition.getName().equals("支店長")) {
-					int positionId = userSelect.getPositionId();
-					Position messageUserPosition = new PositionService().getPosition(positionId);
-					if (user.getBranchId() == userSelect.getBranchId() && messageUserPosition.getName().equals("社員")) {
+					successMessage = String.format("投稿[%s]を削除しました", messageId);
+				} else if (positionId.equals(3)) {
+					if (branchId.equals(user.getBranchId()) && userSelect.getPositionId() == 4) {
 						new MessageService().delteMessage(messageId);
 						new CommentService().delteComment(messageId, 0);
-						successMessage = String.format("投稿%sを削除しました", messageId);
+						successMessage = String.format("投稿[%s]を削除しました", messageId);
 
+					} else {
+						errorMessages.add("削除する権限がありません");
 					}
 				} else {
 					errorMessages.add("削除する権限がありません");

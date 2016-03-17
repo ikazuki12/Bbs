@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import bbs.beans.User;
 
-@WebFilter(urlPatterns = { "/home.jsp", "/home", "/signup.jsp", "/signup", "/control.jsp", "/control", "/settings.jsp", "/settings" })
+@WebFilter(urlPatterns = { "/home.jsp", "/home" ,"/message.jsp", "/message", "/signup.jsp", "/signup", "/control.jsp", "/control", "/settings.jsp", "/settings" })
 public class LoginFilter implements Filter {
 
 	@Override

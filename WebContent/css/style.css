@@ -10,11 +10,26 @@ ul li span {
 ul.success_messaeg li span {
 	color: #0000ff;
 }
+div.topmenu {
+
+	width: 100%;
+    padding: 5px;
+    position: fixed;
+    background-color: #ffffff;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    top:0;
+    left:0;
+}
 div.menu {
 	float: left;
 }
 div.user_name {
 	text-align:right;
+	margin-right: 25px;
+}
+h2 {
+	margin-top: 60px;
 }
 div.comment {
 	font-weight: bold;
@@ -34,25 +49,45 @@ table.messages {
 	border: 1px solid #808080;
 	table-layout: fixed;
 }
+table.messages td.category_text pre {
+
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
 table.messages td.message_text {
-	text-align: center;
+
 	height: 100px;
 	font-size: large;
 }
 table.messages td.message_text pre {
-	width: 80%;
+
 	word-wrap: break-word;
+	white-space: pre-wrap;
 }
 table.messages td.comment_text {
 	font-size: large;
 }
 table.messages td.comment_text pre {
-	width: 80%;
+
 	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+table.messages td.input_comment textarea {
+
+	width: 180%;
 }
 table.messages td.delete {
 	float: right;
 	border: 1px solid #004040;
+}
+table.comments {
+
+	margin-top: 5%;
+	margin-right : auto;
+	margin-left : auto;
+	width: 90%;
+	border: 1px solid #808080;
+	table-layout: fixed;
 }
 a.delete{
 	text-decoration: none;
@@ -85,16 +120,15 @@ div.main {
 }
 table.control {
 	width: 80%;
-	height: 200px;
 	border: 1px solid #c0c0c0;
 	border-collapse: collapse;
 }
 table.control th {
-	height: 30px;
+	height: 50px;
 	border: 1px solid #c0c0c0;
 }
 table.control td {
-	height: 20px;
+	height: 40px;
 	padding-left: 4%;
 	border: 1px solid #c0c0c0;
 }
