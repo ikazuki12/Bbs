@@ -27,7 +27,7 @@
 	</div>
 	<hr />
 </div>
-<h2>掲示板一覧</h2>
+<h2>掲示板一覧test</h2>
 <c:if test="${ not empty errorMessages }">
 	<ul>
 		<c:forEach items="${ errorMessages }" var="message">
